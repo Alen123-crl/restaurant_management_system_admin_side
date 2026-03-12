@@ -51,5 +51,20 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 > ```bash
 > NEXT_PUBLIC_API_URL=https://restaurant-management-system-server.onrender.com
 > ```
+>
+> ### Deploying to Netlify
+>
+> Netlify also supports Next.js. You’ll need to add the same
+> `NEXT_PUBLIC_API_URL` environment variable under **Site settings →
+> Build & deploy → Environment** in your Netlify dashboard. Make sure the
+> **Build command** is `npm run build` (or `pnpm build`, etc.) and the
+> **Publish directory** is `.next` or use the preset “Next” selection.
+>
+> If you see the default Next.js welcome page ("To get started, edit the
+> page.js file") after deploying, it generally means the deployment ran
+> before your latest commits, or the build didn’t include your app
+> changes. Check that the correct branch/commit is connected and review
+> the deploy logs for errors. Re-deploy once the variable and branch are
+> correct.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
