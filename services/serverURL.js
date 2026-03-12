@@ -1,1 +1,2 @@
-export const serverURL = "http://localhost:3000"
+export const serverURL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
