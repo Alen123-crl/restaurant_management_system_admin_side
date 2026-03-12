@@ -1,83 +1,137 @@
 'use client'
 
-import { useState } from "react"
-import { Paper, TextField, Button, Typography } from "@mui/material"
-import { createMenuAPI } from "@/services/allAPI"
+import { useEffect, useState } from "react"
+import { Paper, TextField, Button, Typography, MenuItem, Box } from "@mui/material"
 import { useRouter } from "next/navigation"
+import { createMenuAPI, getCategoriesAPI } from "@/services/allAPI"
 
-export default function CreateMenu(){
-
+export default function CreateMenu() {
   const router = useRouter()
+  const [categories, setCategories] = useState([])
 
-  const [name,setName] = useState("")
-  const [description,setDescription] = useState("")
-  const [price,setPrice] = useState("")
-  const [category,setCategory] = useState("")
-  const [image,setImage] = useState(null)
+  const [name, setName] = useState("")
+  const [description, setDescription] = useState("")
+  const [price, setPrice] = useState("")
+  const [category, setCategory] = useState("")
+  const [image, setImage] = useState(null)
+  const [imagePreview, setImagePreview] = useState("")
 
-  const handleSubmit = async ()=>{
-
-    const token = localStorage.getItem("adminToken")
-
-    const reqHeader = {
-      Authorization:`Bearer ${token}`
+  // Fetch categories from DB
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const result = await getCategoriesAPI()
+      if(result.status === 200) setCategories(result.data)
     }
+    fetchCategories()
+  }, [])
 
-    const reqBody = new FormData()
-
-    reqBody.append("name",name)
-    reqBody.append("description",description)
-    reqBody.append("price",price)
-    reqBody.append("category",category)
-
-    if(image){
-      reqBody.append("image",image)
+  // Handle image change with preview
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if(file){
+      setImage(file)
+      const reader = new FileReader()
+      reader.onloadend = () => setImagePreview(reader.result)
+      reader.readAsDataURL(file)
     }
-
-    const result = await createMenuAPI(reqBody,reqHeader)
-
-    if(result.status === 200){
-      router.push("/admin/menu")
-    }
-
   }
 
-  return(
+  // Handle form submit
+  const handleSubmit = async () => {
+    if(!name || !price || !category){
+      return alert("Please fill in all required fields")
+    }
 
-    <Paper sx={{p:3}}>
+    const token = localStorage.getItem("adminToken")
+    const reqHeader = { Authorization: `Bearer ${token}` }
 
-      <Typography variant="h5" mb={2}>
+    const reqBody = new FormData()
+    reqBody.append("name", name)
+    reqBody.append("description", description)
+    reqBody.append("price", price)
+    reqBody.append("category", category)
+    if(image) reqBody.append("image", image)
+
+    const result = await createMenuAPI(reqBody, reqHeader)
+    if(result.status === 200){
+      alert("Menu item created successfully")
+      router.push("/admin/menu")
+    } else {
+      alert(result.data || "Error creating menu item")
+    }
+  }
+
+  return (
+    <Paper sx={{p:4, maxWidth:600, margin:"auto"}}>
+      <Typography variant="h5" mb={3} fontWeight="bold">
         Add Menu Item
       </Typography>
 
-      <TextField label="Name" fullWidth margin="normal"
-        onChange={(e)=>setName(e.target.value)}
+      <TextField
+        label="Name"
+        fullWidth
+        margin="normal"
+        value={name}
+        onChange={e => setName(e.target.value)}
+        required
       />
 
-      <TextField label="Description" fullWidth margin="normal"
-        onChange={(e)=>setDescription(e.target.value)}
+      <TextField
+        label="Description"
+        fullWidth
+        margin="normal"
+        value={description}
+        onChange={e => setDescription(e.target.value)}
       />
 
-      <TextField label="Price" fullWidth margin="normal"
-        onChange={(e)=>setPrice(e.target.value)}
+      <TextField
+        label="Price"
+        fullWidth
+        margin="normal"
+        type="number"
+        value={price}
+        onChange={e => setPrice(e.target.value)}
+        required
       />
 
-      <TextField label="Category" fullWidth margin="normal"
-        onChange={(e)=>setCategory(e.target.value)}
-      />
+      <TextField
+        select
+        label="Category"
+        fullWidth
+        margin="normal"
+        value={category}
+        onChange={e => setCategory(e.target.value)}
+        required
+      >
+        <MenuItem value="">Select Category</MenuItem>
+        {categories.map(cat => (
+          <MenuItem key={cat._id} value={cat._id}>{cat.name}</MenuItem>
+        ))}
+      </TextField>
 
-      <input type="file"
-        onChange={(e)=>setImage(e.target.files[0])}
-      />
+      <Box mt={2} mb={2}>
+        <input type="file" accept="image/*" onChange={handleImageChange} />
+      </Box>
+
+      {imagePreview && (
+        <Box mb={2}>
+          <Typography variant="subtitle2">Image Preview:</Typography>
+          <img
+            src={imagePreview}
+            alt="Preview"
+            style={{ width:"100%", maxHeight:"250px", objectFit:"cover", borderRadius:"8px" }}
+          />
+        </Box>
+      )}
 
       <Button
         variant="contained"
-        sx={{mt:2}}
+        fullWidth
         onClick={handleSubmit}
+        sx={{ mt:2 }}
       >
-        Create
+        Create Menu Item
       </Button>
-
     </Paper>
   )
 }

@@ -101,8 +101,8 @@ export default function OpeningHours(){
       }}
     >
 
-      <Typography variant="h5" fontWeight="bold" mb={3}>
-        Opening Hours
+      <Typography variant="h5" fontWeight="bold" mb={3} sx={{ fontWeight: 'bold' }}>
+        Opening Days
       </Typography>
 
       {/* Shop Closed */}

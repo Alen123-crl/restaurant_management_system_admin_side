@@ -40,7 +40,7 @@ export default function LoginPage() {
 
         localStorage.setItem("adminToken",result.data.token)
 
-        router.push("/admin")
+        router.push("/admin/restaurantconfig")
 
       }else{
 

@@ -170,3 +170,58 @@ export const getSpecialAPI = async ()=>{
     `${serverURL}/api/getspecial-hours`
   )
 }
+
+// RESTAURANT CONFIGURATION
+
+export const createRestaurantConfigAPI = async (reqBody, reqHeader) => {
+  return await commonAPI(
+    "POST",
+    `${serverURL}/api/createconfig`,
+    reqBody,
+    reqHeader
+  )
+}
+
+export const getRestaurantConfigAPI = async () => {
+  return await commonAPI(
+    "GET",
+    `${serverURL}/api/getconfig`,
+    {},
+    {}
+  )
+}
+
+export const updateRestaurantConfigAPI = async (reqBody, reqHeader) => {
+  return await commonAPI(
+    "PUT",
+    `${serverURL}/api/updateconfig`,
+    reqBody,
+    reqHeader
+  )
+}
+
+
+export const createCategoryAPI = async (reqBody, reqHeader) => {
+  return await commonAPI("POST", `${serverURL}/api/category`, reqBody, reqHeader)
+}
+
+export const getCategoriesAPI = async () => {
+  return await commonAPI("GET", `${serverURL}/api/categories`, {}, {})
+}
+
+export const updateCategoryAPI = async (id, reqBody, reqHeader) => {
+  return await commonAPI("PUT", `${serverURL}/api/category/${id}`, reqBody, reqHeader)
+}
+
+export const deleteCategoryAPI = async (id, reqHeader) => {
+  return await commonAPI("DELETE", `${serverURL}/api/category/${id}`, {}, reqHeader)
+}
+
+export const getReservationsAPI = async (reqHeader) => {
+  return await commonAPI(
+    "GET",
+    `${serverURL}/api/getreservations`,
+    "",
+    reqHeader
+  );
+};

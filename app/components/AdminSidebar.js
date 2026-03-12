@@ -13,7 +13,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
-
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import Link from "next/link";
 
 const drawerWidth = 240;
@@ -35,16 +35,19 @@ export default function AdminSidebar() {
     >
       <List>
 
-        <ListItemButton component={Link} href="/admin">
-          <ListItemIcon><DashboardIcon /></ListItemIcon>
-          <ListItemText primary="Dashboard" />
-        </ListItemButton>
+       <ListItemButton component={Link} href="/admin/restaurantconfig">
+  <ListItemIcon><DashboardIcon /></ListItemIcon>
+  <ListItemText primary="Dashboard" />
+</ListItemButton>
 
         <ListItemButton component={Link} href="/admin/blogs">
           <ListItemIcon><ArticleIcon /></ListItemIcon>
           <ListItemText primary="Blogs" />
         </ListItemButton>
-
+ <ListItemButton component={Link} href="/admin/category">
+          <ListItemIcon><RestaurantMenuIcon /></ListItemIcon>
+          <ListItemText primary="Category" />
+        </ListItemButton>
         <ListItemButton component={Link} href="/admin/menu">
           <ListItemIcon><RestaurantMenuIcon /></ListItemIcon>
           <ListItemText primary="Menu" />
@@ -55,8 +58,11 @@ export default function AdminSidebar() {
           <ListItemText primary="Opening Hours" />
         </ListItemButton>
         
-        <ListItemButton component={Link} href="/admin/special-hours">
-  <ListItemText primary="Special Hours" />
+   <ListItemButton component={Link} href="/admin/special-hours">
+  <ListItemIcon>
+    <CalendarTodayIcon />
+  </ListItemIcon>
+  <ListItemText primary="Special Days" />
 </ListItemButton>
 
         <ListItemButton component={Link} href="/admin/reservations">
