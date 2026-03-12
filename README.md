@@ -33,4 +33,23 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
+> 🔧 **Important:** This project reads the backend URL from an environment
+> variable named `NEXT_PUBLIC_API_URL`. When running locally a default of
+> `http://localhost:3000` is used, but on Vercel you **must** add the
+> variable in the dashboard.
+>
+> 1. Go to your Vercel project dashboard.
+> 2. Navigate to **Settings → Environment Variables**.
+> 3. Add `NEXT_PUBLIC_API_URL` with value
+>    `https://restaurant-management-system-server.onrender.com` (or your
+>    custom backend URL).
+> 4. Redeploy the project so the new value takes effect.
+>
+> For local development you can also create a `.env.local` file at the
+> project root containing:
+>
+> ```bash
+> NEXT_PUBLIC_API_URL=https://restaurant-management-system-server.onrender.com
+> ```
+
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
