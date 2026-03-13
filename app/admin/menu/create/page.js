@@ -15,6 +15,8 @@ export default function CreateMenu() {
   const [category, setCategory] = useState("")
   const [image, setImage] = useState(null)
   const [imagePreview, setImagePreview] = useState("")
+  // object to hold validation errors returned by backend
+  const [errors, setErrors] = useState({})
 
   // Fetch categories from DB
   useEffect(() => {
@@ -38,6 +40,9 @@ export default function CreateMenu() {
 
   // Handle form submit
   const handleSubmit = async () => {
+    // clear any previous errors
+    setErrors({})
+
     if(!name || !price || !category){
       return alert("Please fill in all required fields")
     }
@@ -57,7 +62,12 @@ export default function CreateMenu() {
       alert("Menu item created successfully")
       router.push("/admin/menu")
     } else {
-      alert(result.data || "Error creating menu item")
+      // backend might send an object with field errors or a message string
+      if(result.data && typeof result.data === "object"){
+        setErrors(result.data)
+      } else {
+        alert(result.data || "Error creating menu item")
+      }
     }
   }
 
@@ -72,8 +82,13 @@ export default function CreateMenu() {
         fullWidth
         margin="normal"
         value={name}
-        onChange={e => setName(e.target.value)}
+        onChange={e => {
+          setName(e.target.value)
+          if(errors.name) setErrors(prev=>({...prev,name:""}))
+        }}
         required
+        error={Boolean(errors.name)}
+        helperText={errors.name}
       />
 
       <TextField
@@ -90,8 +105,13 @@ export default function CreateMenu() {
         margin="normal"
         type="number"
         value={price}
-        onChange={e => setPrice(e.target.value)}
+        onChange={e => {
+          setPrice(e.target.value)
+          if(errors.price) setErrors(prev=>({...prev,price:""}))
+        }}
         required
+        error={Boolean(errors.price)}
+        helperText={errors.price}
       />
 
       <TextField
@@ -100,8 +120,13 @@ export default function CreateMenu() {
         fullWidth
         margin="normal"
         value={category}
-        onChange={e => setCategory(e.target.value)}
+        onChange={e => {
+          setCategory(e.target.value)
+          if(errors.category) setErrors(prev=>({...prev,category:""}))
+        }}
         required
+        error={Boolean(errors.category)}
+        helperText={errors.category}
       >
         <MenuItem value="">Select Category</MenuItem>
         {categories.map(cat => (
