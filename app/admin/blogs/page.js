@@ -71,7 +71,7 @@ export default function BlogsPage(){
 
         {blogs.map((blog)=>(
 
-    <Grid item xs={12} sm={6} md={6} lg={4} xl={3}>
+    <Grid key={blog._id} size={{xs:12, sm:6, md:6, lg:4, xl:3}}>
 
          <Card
   sx={{
